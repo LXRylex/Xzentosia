@@ -1,21 +1,81 @@
+/* ===== Soft theme + full-page cover ===== */
 :root{
-  --bg:#050508; --panel:#0b0e13; --edge:#1a1d25;
-  --ink:#EDE6FF; --muted:#9aa0aa;
-  --accent:#B38AFF; --accent2:#8E6BFF;
-  --radius:16px; --space:16px;
+  --bg:#0b0c10;        /* black/purple base */
+  --panel:#14171d;
+  --edge:#232832;
+  --ink:#f4f4f6;
+  --muted:#a7afbd;
+  --accent:#b38aff;
+  --accent-2:#8e6bff;
+
+  --radius:16px;
+  --space:16px;
+
+  /* Gentle motion */
+  --ease: cubic-bezier(.2,.8,.2,1);
+  --t: 140ms;          /* keep it short */
 }
-*{box-sizing:border-box} html,body{margin:0}
-body{background:radial-gradient(1200px 600px at 10% 10%,#1a1030 0%,#050508 40%),var(--bg);
-     color:var(--ink); font:15px/1.6 system-ui,Segoe UI,Inter,Arial}
-.topbar{position:sticky;top:0;display:flex;gap:16px;align-items:center;justify-content:space-between;padding:14px 18px;background:rgba(10,12,18,.65);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.06)}
-.topbar h1{font-size:18px;margin:0}
-.topbar a{color:var(--ink);opacity:.8;text-decoration:none;margin-left:12px}
-.topbar a:hover{opacity:1}
-.hero{max-width:900px;margin:60px auto 24px;padding:0 18px;text-align:center}
-.hero h2{font-size:40px;margin:8px 0 6px;background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;color:transparent}
-.tag{opacity:.8;margin:0 0 18px}
-.btn{display:inline-block;padding:10px 16px;border-radius:999px;border:1px solid rgba(255,255,255,.2);text-decoration:none;color:var(--ink)}
-.grid{max-width:1000px;margin:24px auto;padding:0 18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
-.card{background:linear-gradient(180deg,rgba(179,138,255,.09),rgba(142,107,255,.05));border:1px solid rgba(255,255,255,.06);border-radius:var(--radius);padding:16px}
-.card h3{margin:0 0 6px}
-.foot{max-width:1000px;margin:40px auto 20px;padding:0 18px;opacity:.7;text-align:center}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce){
+  *{ transition: none !important; animation: none !important; }
+}
+
+/* Soften everything (no harsh long transitions) */
+*{
+  transition: color var(--t) var(--ease),
+              background-color var(--t) var(--ease),
+              border-color var(--t) var(--ease),
+              box-shadow var(--t) var(--ease),
+              transform var(--t) var(--ease);
+}
+
+/* Page cover background */
+html,body{ height:100%; }
+body{
+  margin:0;
+  color:var(--ink);
+  background:
+    radial-gradient(1200px 700px at 20% -10%, rgba(179,138,255,.25), transparent 60%),
+    radial-gradient(1200px 700px at 80% 110%, rgba(142,107,255,.18), transparent 60%),
+    linear-gradient(#0b0c10, #0b0c10);
+  background-attachment: fixed;        /* “cover” feel */
+  min-height:100svh;                   /* fill on mobile too */
+}
+
+/* Panels */
+.header, .footer, .card{
+  background: color-mix(in oklab, var(--panel) 92%, black 8%);
+  border:1px solid color-mix(in oklab, var(--edge) 70%, white 5%);
+  border-radius: var(--radius);
+  box-shadow: 0 10px 30px rgba(0,0,0,.35);
+}
+
+/* ===== Layout / grid ===== */
+.wrap{ 
+  max-width:1100px; margin:24px auto; padding-inline:16px; 
+  display:grid; gap:16px;
+}
+
+/* Projects grid that doesn’t look “split” with few items */
+.projects{
+  display:grid; gap:16px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  align-items: stretch;
+}
+
+/* If only 1–2 cards, center them and use single row */
+.projects:has(.card:nth-child(2):last-child),
+.projects:has(.card:only-child){
+  grid-template-columns: minmax(280px, 520px);
+  justify-content: center;
+}
+
+/* Card polishing */
+.card{ padding:16px; }
+.card:hover{ transform: translateY(-2px); }
+
+/* Headings / links */
+h1,h2{ margin:0; letter-spacing:.2px }
+a{ color:var(--accent); text-decoration:none }
+a:hover{ color:var(--accent-2) }
