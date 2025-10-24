@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Xzentosia</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h1>Xzentosia</h1>
+    <nav>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main class="hero">
+    <h2>Welcome to Xzentosia</h2>
+    <p class="tag">Dark. Neon. Clean.</p>
+    <a class="btn" href="#projects">Explore</a>
+  </main>
+
+  <section id="projects" class="grid">
+    <article class="card">
+      <h3>SL Player Stats</h3>
+      <p>Custom charts, proxy, and caching pipeline.</p>
+    </article>
+    <article class="card">
+      <h3>Xzen Mod Manager</h3>
+      <p>Plugin-first toolkit with purple UI vibes.</p>
+    </article>
+    <article class="card">
+      <h3>DasuAI</h3>
+      <p>Discord bot modules with music & tools.</p>
+    </article>
+  </section>
+
+  <footer id="contact" class="foot">
+    <p>© <span id="y"></span> Xzentosia • Built with GitHub Pages</p>
+  </footer>
+
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

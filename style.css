@@ -1,0 +1,21 @@
+:root{
+  --bg:#050508; --panel:#0b0e13; --edge:#1a1d25;
+  --ink:#EDE6FF; --muted:#9aa0aa;
+  --accent:#B38AFF; --accent2:#8E6BFF;
+  --radius:16px; --space:16px;
+}
+*{box-sizing:border-box} html,body{margin:0}
+body{background:radial-gradient(1200px 600px at 10% 10%,#1a1030 0%,#050508 40%),var(--bg);
+     color:var(--ink); font:15px/1.6 system-ui,Segoe UI,Inter,Arial}
+.topbar{position:sticky;top:0;display:flex;gap:16px;align-items:center;justify-content:space-between;padding:14px 18px;background:rgba(10,12,18,.65);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.06)}
+.topbar h1{font-size:18px;margin:0}
+.topbar a{color:var(--ink);opacity:.8;text-decoration:none;margin-left:12px}
+.topbar a:hover{opacity:1}
+.hero{max-width:900px;margin:60px auto 24px;padding:0 18px;text-align:center}
+.hero h2{font-size:40px;margin:8px 0 6px;background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;color:transparent}
+.tag{opacity:.8;margin:0 0 18px}
+.btn{display:inline-block;padding:10px 16px;border-radius:999px;border:1px solid rgba(255,255,255,.2);text-decoration:none;color:var(--ink)}
+.grid{max-width:1000px;margin:24px auto;padding:0 18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.card{background:linear-gradient(180deg,rgba(179,138,255,.09),rgba(142,107,255,.05));border:1px solid rgba(255,255,255,.06);border-radius:var(--radius);padding:16px}
+.card h3{margin:0 0 6px}
+.foot{max-width:1000px;margin:40px auto 20px;padding:0 18px;opacity:.7;text-align:center}
