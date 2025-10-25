@@ -1,0 +1,664 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>★ Old Internet Home ★</title>
+  <meta name="color-scheme" content="dark">
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+  <style>
+    :root{ --cursor: url("./assets/custom/cursor.png") 10 2; }
+    *{ box-sizing: border-box; }
+
+    html,body{height:100%}
+    body{
+      margin:0; color:#f8f8ff;
+      font-family:'VT323',monospace; font-size:20px; letter-spacing:.3px;
+      background:#000; cursor:var(--cursor), auto; overflow-x:hidden;
+    }
+    a,.btn,button,[role="button"]{ cursor:var(--cursor), pointer }
+    input[type="text"],input[type="search"],textarea{ cursor:text }
+
+    /* snow canvas */
+    #snow{ position:fixed; inset:0; width:100vw; height:100vh; z-index:0; pointer-events:none; image-rendering:pixelated; }
+
+    .wrap{ position:relative; z-index:1; width:min(1100px,96vw); margin:18px auto; border:3px groove #7f7fb3; background:#0f0f1a; box-shadow:0 12px 40px rgba(0,0,0,.6)}
+    table{ width:100%; border-collapse:collapse }
+    .banner{ background:linear-gradient(180deg,#28285c,#151533); border-bottom:3px ridge #9c8cff; padding:8px 10px }
+    .banner h1{ margin:0; text-align:center; text-shadow:0 0 6px #8e6bff; font-weight:700; font-size:28px; line-height:1.2 }
+    .marq{ color:#fff; font-weight:700; text-transform:uppercase; font-size:16px }
+    .row{ vertical-align:top }
+    .nav{ width:210px; background:#13132a; border-right:3px groove #67679b; padding:10px }
+    .rightbar{ width:260px; background:#13132a; border-left:3px groove #67679b; padding:10px }
+    .content{ padding:14px 16px 18px }
+    .hr{ height:2px; background:linear-gradient(90deg,#b38aff,#8e6bff,#7f52ff); margin:10px 0 }
+    .btn{
+      display:inline-block; margin:6px 0; padding:8px 10px; color:#fff; text-decoration:none; font-weight:700;
+      border:2px outset #404080; background:linear-gradient(180deg,#2a2a5a,#1c1c44); text-shadow:0 1px 0 #000; font-size:18px;
+    }
+    .btn:hover{ filter:brightness(1.2) }
+    .blink{ animation:blink 1s step-end infinite } @keyframes blink{ 50%{opacity:0} }
+    .panel{ border:3px ridge #7d7db0; background:#111126; padding:10px; margin:10px 0 }
+    .panel h2{ margin:0 0 8px; color:#e6deff; font-weight:700; font-size:22px }
+    .panel p{ margin:6px 0; color:#d7d7f7; font-size:20px }
+
+    .badges{ display:flex; flex-wrap:wrap; gap:6px; margin-top:10px }
+    .badge{
+      width:88px; height:31px; display:inline-grid; place-items:center; color:#fff;
+      border:2px solid #000; box-shadow:inset 0 0 0 2px #3a3a6a; background:linear-gradient(180deg,#1a1a3a,#090919);
+      font-weight:700; font-size:14px;
+    }
+    .badge.alt{ background:linear-gradient(180deg,#612bb3,#2e1860) }
+
+    a{ color:#c0a6ff } .sep{ margin:6px 0; opacity:.6 } .right{text-align:right}
+    .glitter{background:linear-gradient(90deg,#fff,#b38aff,#fff,#8e6bff,#fff);background-size:400% 100%;
+             -webkit-background-clip:text;background-clip:text;color:transparent;animation:shimmer 3s linear infinite}
+    @keyframes shimmer{from{background-position:0% 0}to{background-position:400% 0}}
+    .mini{ font-size:16px; color:#a7afbd } .del{ float:right; font-size:16px; color:#e74c3c; cursor:pointer }
+    .gb-entry .meta{ opacity:.7; font-size:16px }
+
+    /* top-right user bar */
+    #topbar{position:fixed;top:10px;right:10px;display:none;align-items:center;gap:8px;background:#111126;border:2px ridge #7d7db0;padding:6px 10px;border-radius:10px;z-index:2}
+    #topbar .pfp{width:26px;height:26px;border-radius:50%;background:#2a2a5a;display:grid;place-items:center;font-weight:700;color:#fff;overflow:hidden;font-size:14px}
+    #topbar .pfp.img{background-size:cover;background-position:center}
+    #topbar .name{font-weight:700; color:#e6deff; font-size:16px}
+
+    /* profile panel */
+    .profile-card{ text-align:center }
+    .profile-card img{ width:100%; max-width:182px; aspect-ratio:1/1; object-fit:cover;
+      border:3px ridge #7d7db0; border-radius:10px; display:block; margin:4px auto 6px }
+    .profile-card .nm{ font-weight:700; color:#e6deff; font-size:20px }
+    .profile-card .tag{ color:#c8c8ff; opacity:.85; font-size:18px }
+    .socials{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+    .sbtn{
+      display:block; width:100%; text-align:center; padding:6px 8px; color:#fff; text-decoration:none; font-weight:700; font-size:18px;
+      border:2px outset #404080; background:linear-gradient(180deg,#2a2a5a,#1c1c44); text-shadow:0 1px 0 #000
+    }
+    .sbtn:hover{filter:brightness(1.15)}
+
+    /* guestbook */
+    .guestbook #commentForm{ display:grid; grid-template-columns:1fr auto; gap:10px; align-items:start }
+    #commentForm textarea{ width:100%; min-height:130px; box-sizing:border-box; font-family:'VT323',monospace; font-size:20px; resize:none }
+    #commentForm .btn{ align-self:start; height:38px; padding-inline:14px }
+    #commentsList{ max-height:320px; overflow:auto; padding-right:4px }
+    #pager{ display:flex; gap:6px; align-items:center; flex-wrap:wrap; margin-top:8px }
+    .page-btn{ cursor:pointer; padding:4px 8px; border:2px outset #404080;
+      background:linear-gradient(180deg,#2a2a5a,#1c1c44); color:#fff; font-weight:700; font-size:18px }
+    .page-btn[disabled]{ opacity:.5; cursor:not-allowed }
+    .page-btn.active{ outline:2px solid #b38aff }
+
+    /* music */
+    #musicList{ max-height:300px; overflow:auto; padding-right:4px }
+    #musicPager{ display:flex; gap:6px; align-items:center; flex-wrap:wrap; margin-top:8px }
+    .mlink{ display:block; padding:6px 8px; margin:6px 0; border:2px outset #404080;
+      background:linear-gradient(180deg,#2a2a5a,#1c1c44); text-decoration:none; color:#fff; font-weight:700 }
+    .mlink:hover{ filter:brightness(1.15) }
+    .trash{ float:right; color:#e74c3c; cursor:pointer; }
+
+    /* player panel */
+    #playerPanel .controls{ display:flex; gap:6px; flex-wrap:wrap; margin:6px 0 }
+    #ytwrap{
+      width:100%;
+      border:2px inset #3a3a6a; background:#000; overflow:hidden;
+      aspect-ratio:16/9;
+    }
+    #ytplayer{ width:100%; height:100% }
+
+    /* compact icon buttons */
+    .icon-btn{
+      width:34px; height:34px; padding:0; line-height:1;
+      display:inline-grid; place-items:center;
+      font:700 18px 'VT323', monospace;
+      color:#fff; text-shadow:0 1px 0 #000;
+      border:2px outset #404080;
+      background:linear-gradient(180deg,#2a2a5a,#1c1c44);
+    }
+    .icon-btn:hover{ filter:brightness(1.15) }
+
+    /* Mobile */
+    @media (max-width: 960px){
+      table, tbody, tr, .row, .row > td { display:block; width:100% !important; }
+      .wrap{ width:92vw; max-width:900px; margin:12px auto; }
+      body{ font-size:22px }
+      .banner{ position:sticky; top:0; z-index:3 }
+      .banner h1{ font-size:24px }
+      .marq{ font-size:14px }
+      .nav, .content, .rightbar{ padding:14px; border-left:0; border-right:0 }
+      .nav{ border-bottom:3px groove #67679b }
+      .rightbar{ border-top:3px groove #67679b; display:none; }
+      .btn{ display:block; width:100%; text-align:left }
+      .sbtn{ width:100% }
+      .profile-card img{ max-width:170px }
+      #commentsList{ max-height:48vh }
+      #topbar{ right:6px; top:6px; }
+    }
+    @media (max-width:560px){
+      body{ font-size:20px }
+      .guestbook #commentForm{ grid-template-columns:1fr; }
+      #commentForm .btn{ width:100%; height:auto; }
+    }
+  </style>
+
+  <!-- 32×32 cursor from PNG -->
+  <script>
+    (async () => {
+      try {
+        const src = "./assets/custom/cursor.png";
+        const s = 32;
+        const img = new Image();
+        img.src = src + "?v=" + Date.now();
+        if (img.decode) { await img.decode(); } else { await new Promise(r => img.onload = r); }
+        const c = document.createElement("canvas");
+        c.width = c.height = s;
+        const ctx = c.getContext("2d");
+        ctx.imageSmoothingEnabled = false;
+        ctx.drawImage(img, 0, 0, s, s);
+        const data = c.toDataURL("image/png");
+        document.documentElement.style.setProperty("--cursor", `url("${data}") 10 2`);
+      } catch {}
+    })();
+  </script>
+</head>
+<body>
+  <!-- PIXEL SNOW -->
+  <canvas id="snow"></canvas>
+  <script>
+    (() => {
+      const cvs = document.getElementById('snow');
+      const ctx = cvs.getContext('2d', { alpha: true });
+      let W, H, DPR, flakes = [], last = performance.now();
+      function sizeCanvas(){
+        DPR = Math.max(1, Math.min(3, window.devicePixelRatio || 1));
+        W = Math.floor(window.innerWidth);
+        H = Math.floor(window.innerHeight);
+        cvs.style.width = W + 'px';
+        cvs.style.height = H + 'px';
+        cvs.width  = Math.floor(W * DPR);
+        cvs.height = Math.floor(H * DPR);
+        ctx.imageSmoothingEnabled = false;
+        spawnFlakes();
+      }
+      function spawnFlakes(){
+        const density = Math.floor((W*H) / 22000);
+        const count = Math.max(80, Math.min(220, density));
+        flakes.length = 0;
+        for(let i=0;i<count;i++){
+          const size = (Math.random()<0.7) ? 2 : 3;
+          flakes.push({
+            x: Math.random()*W, y: Math.random()*H, s: size,
+            vy: 0.15 + Math.random()*0.35, vx: (Math.random()*0.2 - 0.1),
+            phase: Math.random()*Math.PI*2
+          });
+        }
+      }
+      function step(ts){
+        const dt = Math.min(50, ts - last); last = ts;
+        ctx.clearRect(0,0,cvs.width,cvs.height);
+        ctx.fillStyle = '#fff';
+        for(const f of flakes){
+          f.phase += 0.003 * dt;
+          const sway = Math.sin(f.phase) * 0.2;
+          f.x += (f.vx + sway) * dt * 0.06;
+          f.y += f.vy * dt * 0.06;
+          if(f.y > H + 4) { f.y = -4; f.x = Math.random()*W; }
+          if(f.x < -4) f.x = W + 4;
+          if(f.x > W + 4) f.x = -4;
+          const dpr = window.devicePixelRatio||1;
+          const px = Math.round(f.x * dpr), py = Math.round(f.y * dpr), ps = Math.max(1, Math.round(f.s * dpr));
+          ctx.fillRect(px, py, ps, ps);
+        }
+        requestAnimationFrame(step);
+      }
+      addEventListener('resize', sizeCanvas, { passive:true });
+      sizeCanvas(); requestAnimationFrame(step);
+    })();
+  </script>
+
+  <!-- Auth token capture + fetch patch -->
+  <script>
+    (function(){
+      const m=(location.hash||'').match(/sid=([^&]+)/);
+      if(m){ localStorage.setItem('sid', m[1]); history.replaceState(null,'', location.pathname+location.search); }
+      const API='https://profile-7xr4.onrender.com';
+      const _fetch=window.fetch;
+      window.fetch=(input,init={})=>{
+        const url=typeof input==='string'?input:input.url;
+        const headers=new Headers(init.headers||{});
+        const sid=localStorage.getItem('sid');
+        if(sid && url.startsWith(API)) headers.set('Authorization','Bearer '+sid);
+        return _fetch(input,{...init,headers,credentials:'include'});
+      };
+    })();
+  </script>
+
+  <!-- top-right profile -->
+  <div id="topbar"><div class="pfp" id="pfp">?</div><div class="name" id="uNameBar">—</div></div>
+
+  <div class="wrap">
+    <table>
+      <tr><td colspan="3" class="banner">
+        <div class="marq">
+          <div class="ticker">
+            <span>★ Welcome to the Old Internet ★ Enjoy the pixels, the blink, the vibes ★</span>
+               <span aria-hidden="true"></span>
+          </div>
+        </div>
+        <style>
+          .marq{overflow:hidden; white-space:nowrap}
+          .ticker{display:inline-block; padding-left:100%; animation:tick 20s linear infinite}
+          .ticker span{display:inline-block; padding-right:2rem}
+          @keyframes tick{from{transform:translateX(0)} to{transform:translateX(-100%)}}
+        </style>
+        <h1>Yui's corner</h1>
+      </td></tr>
+
+      <tr class="row">
+        <!-- LEFT NAV -->
+        <td class="nav">
+          <div class="panel profile-card">
+            <img src="./assets/custom/profile.png" alt="Profile">
+            <div class="nm">Yui</div>
+            <div class="tag">artist • coder • chaos</div>
+            <div class="socials">
+              <a class="sbtn" href="https://discord.com/users/579784411441135636" target="_blank" rel="noopener">Discord</a>
+              <a class="sbtn" href="https://github.com/LXRylex" target="_blank" rel="noopener">GitHub</a>
+              <a class="sbtn" href="https://instagram.com/lxdasu" target="_blank" rel="noopener">Instagram</a>
+            </div>
+          </div>
+
+          <a class="btn" href="#home">» Home</a>
+          <a class="btn" href="#about">» About</a>
+          <a class="btn" href="#links">» Links <span class="blink">NEW!</span></a>
+          <a class="btn" href="#guestbook">» Guestbook</a>
+
+          <div class="panel">
+            <h2>Under Construction</h2>
+            <p>I have no wise words to say yet</p>
+            <div class="badges">
+              <div class="badge">Best Viewed 1024×768</div>
+              <div class="badge alt">Made on HTML</div>
+              <div class="badge">No Flash</div>
+            </div>
+          </div>
+        </td>
+
+        <!-- MAIN CONTENT -->
+        <td class="content">
+          <div id="home" class="panel">
+            <h2>Welcome, net-traveler!</h2>
+            <p>Enjoy around i guess xD</p>
+            <div class="hr"></div>
+            <p><strong>Uhhh...</strong> <em><span class="glitter">I make pretty things hurt</span></em></p>
+          </div>
+
+          <div id="about" class="panel">
+            <h2>About</h2>
+            <p>I like drawing and listen to music i do some coding time to time</p>
+          </div>
+
+          <div id="links" class="panel">
+            <h2>Cool Links</h2>
+            <ul>
+              <li>» <a href="#">theres</a></li>
+              <li>» <a href="#">no</a></li>
+              <li>» <a href="#">links yet</a></li>
+            </ul>
+          </div>
+
+          <div id="guestbook" class="panel guestbook">
+            <h2>Guestbook</h2>
+            <div id="authRow" style="display:flex;align-items:center;gap:8px;margin:6px 0 10px">
+              <button id="loginBtn" class="btn">Login with Discord</button>
+              <div id="userInfo" class="mini" style="display:none">
+                Signed in as <strong id="uName"></strong> · <a id="logoutLink" href="#">Logout</a>
+              </div>
+            </div>
+            <div id="commentsList"></div>
+            <div id="pager"></div>
+            <form id="commentForm" style="margin-top:8px;display:none">
+              <textarea name="content" placeholder="Say hi (plain text only)" maxlength="500"></textarea>
+              <button class="btn" type="submit">Post</button>
+            </form>
+            <div class="mini" id="cStatus"></div>
+          </div>
+        </td>
+
+        <!-- RIGHT PANEL (Music + Player) -->
+        <td class="rightbar">
+          <div class="panel">
+            <h2>Music Box</h2>
+            <form id="musicForm" style="display:none; margin-bottom:10px">
+              <input id="mTitle" type="text" placeholder="Track title" style="width:100%;margin-bottom:6px;
+                background:#0e0e22;color:#fff;border:2px inset #3a3a6a;padding:6px;font-size:18px">
+              <input id="mURL" type="text" placeholder="YouTube link" style="width:100%;margin-bottom:6px;
+                background:#0e0e22;color:#fff;border:2px inset #3a3a6a;padding:6px;font-size:18px">
+              <button class="btn" type="submit">Save</button>
+              <div class="mini" id="mStatus"></div>
+            </form>
+
+            <div id="musicList"></div>
+            <div id="musicPager"></div>
+
+            <!-- Player -->
+            <div id="playerPanel" class="panel" style="margin-top:12px">
+              <h2>Player</h2>
+              <div id="nowTitle" class="mini" style="margin-bottom:6px">—</div>
+              <div class="controls">
+                <button class="icon-btn" id="btnShuffle" title="Shuffle">↻</button>
+                <button class="icon-btn" id="btnPlay" title="Play/Pause">▶</button>
+                <button class="icon-btn" id="btnNext" title="Next">≫</button>
+              </div>
+              <div id="ytwrap"><div id="ytplayer"></div></div>
+            </div>
+          </div>
+        </td>
+      </tr>
+
+      <tr><td colspan="3">
+        <footer style="text-align:center;color:#c8c8ff;font-size:16px;padding:12px 10px 16px;background:#0d0d1d;border-top:3px ridge #7d7db0">
+          © <span id="year"></span> Xzentosia • 2024 - 2025 • <small id="updated"></small> • <a href="#top">Back to top</a>
+        </footer>
+      </td></tr>
+    </table>
+  </div>
+
+  <script>
+    document.getElementById("year").textContent=new Date().getFullYear();
+    document.getElementById("updated").textContent="Last updated: "+new Date().toLocaleString();
+  </script>
+
+  <!-- app: comments + music + player -->
+  <script>
+    const API='https://profile-7xr4.onrender.com';
+    const ADMIN_ID='579784411441135636';
+
+    // elements (comments)
+    const listEl=document.getElementById('commentsList');
+    const pagerEl=document.getElementById('pager');
+    const formEl=document.getElementById('commentForm');
+    const statusEl=document.getElementById('cStatus');
+    const loginBtn=document.getElementById('loginBtn');
+    const userInfo=document.getElementById('userInfo');
+    const uNameEl=document.getElementById('uName');
+    const topbar=document.getElementById('topbar');
+    const pfpEl=document.getElementById('pfp');
+    const uNameBar=document.getElementById('uNameBar');
+
+    // elements (music)
+    const musicForm=document.getElementById('musicForm');
+    const mTitle=document.getElementById('mTitle');
+    const mURL=document.getElementById('mURL');
+    const mStatus=document.getElementById('mStatus');
+    const musicList=document.getElementById('musicList');
+    const musicPager=document.getElementById('musicPager');
+
+    // elements (player)
+    const nowTitle=document.getElementById('nowTitle');
+    const btnShuffle=document.getElementById('btnShuffle');
+    const btnPlay=document.getElementById('btnPlay');
+    const btnNext=document.getElementById('btnNext');
+
+    let ME=null, PAGE=1, PAGES=1, PAGE_SIZE=20;
+    let MPAGE=1, MPAGES=1, MPAGE_SIZE=12;
+
+    // player state
+    let allMusic=[], queue=[], cursor=-1, ytReady=false, player=null;
+
+    const esc=(s)=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+    const setStatus=(el,t)=>el&&(el.textContent=t||'');
+
+    async function getMe(){ try{ const r=await fetch(API+'/api/me'); if(!r.ok) return null; return await r.json(); } catch{ return null } }
+    function showTopBar(un,me){
+      topbar.style.display='flex'; uNameBar.textContent=un;
+      if(me&&me.avatar){
+        const url=`https://cdn.discordapp.com/avatars/${me.id}/${me.avatar}.webp?size=64`;
+        pfpEl.style.backgroundImage=`url(${url})`; pfpEl.textContent=''; pfpEl.classList.add('img');
+      }else{
+        pfpEl.style.backgroundImage=''; pfpEl.textContent=(un[0]||'?').toUpperCase(); pfpEl.classList.remove('img');
+      }
+    }
+    async function refreshMe(){
+      ME=await getMe();
+      if(ME){
+        const un=ME.username||('User '+ME.id);
+        loginBtn.style.display='none'; userInfo.style.display=''; uNameEl.textContent=un; formEl.style.display='';
+        showTopBar(un,ME);
+        if(String(ME.id)===String(ADMIN_ID)) musicForm.style.display='block';
+      }else{
+        loginBtn.style.display=''; userInfo.style.display='none'; formEl.style.display='none'; topbar.style.display='none';
+        musicForm.style.display='none';
+      }
+    }
+
+    // ---------- Comments ----------
+    async function listComments(p=PAGE){
+      try{
+        const r=await fetch(`${API}/api/comments?page=${p}&pageSize=${PAGE_SIZE}`,{cache:'no-store'});
+        if(!r.ok) throw 0;
+        const j=await r.json(); PAGE=j.page; PAGES=j.pages||1;
+        renderComments(j.items||[]); renderPager();
+      }catch{ setStatus(statusEl,'Could not load comments.'); }
+    }
+    function renderComments(items){
+      listEl.innerHTML=items.length?'':'<p>No entries yet… be the first!</p>';
+      for(const c of items){
+        const d=document.createElement('div'); d.className='gb-entry';
+        const canDel=(ME&&String(ME.id)===String(ADMIN_ID));
+        const del=canDel?`<span class="del" data-id="${c.id}">✖</span>`:'';
+        const when=c.ts?new Date(c.ts).toLocaleString():'';
+        d.innerHTML=`${del}<strong>${esc(c.username||'Anon')}</strong> <span class="meta">(${when})</span><br>${esc(c.content||'')}`;
+        listEl.appendChild(d);
+      }
+      if(ME&&String(ME.id)===String(ADMIN_ID)){
+        listEl.querySelectorAll('.del').forEach(el=>el.addEventListener('click',async()=>{
+          const id=el.getAttribute('data-id');
+          try{
+            const r=await fetch(`${API}/api/comments/${encodeURIComponent(id)}`,{method:'DELETE'});
+            if(r.ok){ await listComments(PAGE); } else setStatus(statusEl,'Delete failed.');
+          }catch{ setStatus(statusEl,'Delete failed.'); }
+        }));
+      }
+      listEl.scrollTop=0;
+    }
+    function btn(label,on,{active=false,disabled=false}={}){
+      const b=document.createElement('button'); b.textContent=label; b.className='page-btn'+(active?' active':'');
+      if(disabled) b.setAttribute('disabled',''); b.addEventListener('click',on); return b;
+    }
+    function renderPager(){
+      pagerEl.innerHTML=''; if(PAGES<=1) return;
+      pagerEl.appendChild(btn('Prev',()=>{ if(PAGE>1) listComments(PAGE-1); },{disabled:PAGE===1}));
+      const span=2, start=Math.max(1,PAGE-span), end=Math.min(PAGES,PAGE+span);
+      if(start>1){
+        pagerEl.appendChild(btn('1',()=>listComments(1),{active:PAGE===1}));
+        if(start>2) pagerEl.appendChild(Object.assign(document.createElement('span'),{textContent:'…',className:'mini'}));
+      }
+      for(let p=start;p<=end;p++) pagerEl.appendChild(btn(String(p),()=>listComments(p),{active:PAGE===p}));
+      if(end<PAGES){
+        if(end<PAGES-1) pagerEl.appendChild(Object.assign(document.createElement('span'),{textContent:'…',className:'mini'}));
+        pagerEl.appendChild(btn(String(PAGES),()=>listComments(PAGES),{active:PAGE===PAGES}));
+      }
+      pagerEl.appendChild(btn('Next',()=>{ if(PAGE<PAGES) listComments(PAGE+1); },{disabled:PAGE===PAGES}));
+    }
+
+    formEl?.addEventListener('submit', async (ev)=>{
+      ev.preventDefault();
+      const ta=formEl.querySelector('textarea[name="content"]');
+      const content=(ta.value||'').trim(); if(!content) return;
+      setStatus(statusEl,'Posting…');
+      try{
+        const r=await fetch(API+'/api/comments',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({content})});
+        if(r.ok){ ta.value=''; setStatus(statusEl,''); await listComments(1); } else setStatus(statusEl,'Post failed.');
+      }catch{ setStatus(statusEl,'Post failed.'); }
+    });
+
+    document.getElementById('loginBtn').addEventListener('click', ()=>{
+      const back=location.href; location.href=API+'/api/login?redirect='+encodeURIComponent(back);
+    });
+    document.getElementById('logoutLink').addEventListener('click', (e)=>{
+      e.preventDefault(); localStorage.removeItem('sid');
+      const back=location.href; location.href=API+'/api/logout?redirect='+encodeURIComponent(back);
+    });
+
+    // ---------- Music (list) ----------
+    async function listMusic(p=MPAGE){
+      try{
+        const r=await fetch(`${API}/api/music?page=${p}&pageSize=${MPAGE_SIZE}`,{cache:'no-store'});
+        if(!r.ok) throw 0;
+        const j=await r.json(); MPAGE=j.page; MPAGES=j.pages||1;
+        renderMusic(j.items||[]); renderMusicPager();
+      }catch{ setStatus(mStatus,'Could not load music.'); }
+    }
+    function renderMusic(items){
+      musicList.innerHTML = items.length ? '' : '<p class="mini">No tracks yet…</p>';
+      for(const m of items){
+        const a=document.createElement('a');
+        a.className='mlink';
+        a.href = `${API}/m/${encodeURIComponent(m.id)}`;  // hides real URL
+        a.target = '_blank'; a.rel='noopener';
+        const when = m.ts ? new Date(m.ts).toLocaleDateString() : '';
+        a.innerHTML = `▶ ${esc(m.title)} <span class="mini">(${when})</span>`;
+        // play inside player unless user ctrl/cmd-clicks
+        a.addEventListener('click', (ev)=>{
+          if(ev.metaKey || ev.ctrlKey) return;
+          ev.preventDefault();
+          startPlayerWithTrack(m);
+        });
+        if(ME && String(ME.id)===String(ADMIN_ID)){
+          const x = document.createElement('span');
+          x.className='trash'; x.textContent='✖'; x.title='Delete';
+          x.addEventListener('click', async (ev)=>{
+            ev.preventDefault(); ev.stopPropagation();
+            try{
+              const r=await fetch(`${API}/api/music/${encodeURIComponent(m.id)}`,{method:'DELETE'});
+              if(r.ok){ await refreshPlaylist(); await listMusic(MPAGE); } else setStatus(mStatus,'Delete failed.');
+            }catch{ setStatus(mStatus,'Delete failed.'); }
+          });
+          a.appendChild(x);
+        }
+        musicList.appendChild(a);
+      }
+      musicList.scrollTop=0;
+    }
+    function renderMusicPager(){
+      musicPager.innerHTML=''; if(MPAGES<=1) return;
+      musicPager.appendChild(btn('Prev',()=>{ if(MPAGE>1) listMusic(MPAGE-1); },{disabled:MPAGE===1}));
+      const span=2, start=Math.max(1,MPAGE-span), end=Math.min(MPAGES,MPAGE+span);
+      if(start>1){
+        musicPager.appendChild(btn('1',()=>listMusic(1),{active:MPAGE===1}));
+        if(start>2) musicPager.appendChild(Object.assign(document.createElement('span'),{textContent:'…',className:'mini'}));
+      }
+      for(let p=start;p<=end;p++) musicPager.appendChild(btn(String(p),()=>listMusic(p),{active:MPAGE===p}));
+      if(end<MPAGES){
+        if(end<MPAGES-1) musicPager.appendChild(Object.assign(document.createElement('span'),{textContent:'…',className:'mini'}));
+        musicPager.appendChild(btn(String(MPAGES),()=>listMusic(MPAGES),{active:MPAGE===MPAGES}));
+      }
+      musicPager.appendChild(btn('Next',()=>{ if(MPAGE<MPAGES) listMusic(MPAGE+1); },{disabled:MPAGE===MPAGES}));
+    }
+
+    musicForm.addEventListener('submit', async (ev)=>{
+      ev.preventDefault();
+      const title=(mTitle.value||'').trim();
+      const url=(mURL.value||'').trim();
+      if(!title || !url) return setStatus(mStatus,'Fill title and YouTube link');
+      setStatus(mStatus,'Saving…');
+      try{
+        const r=await fetch(`${API}/api/music`,{
+          method:'POST', headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({ title, url })
+        });
+        if(r.ok){
+          mTitle.value=''; mURL.value='';
+          setStatus(mStatus,'Saved');
+          await refreshPlaylist();
+          await listMusic(1);
+        } else {
+          const j=await r.json().catch(()=>({}));
+          setStatus(mStatus, j?.error || 'Save failed');
+        }
+      }catch{ setStatus(mStatus,'Save failed'); }
+    });
+
+    // ---------- Player (YouTube) ----------
+    function ensureYT(cb){
+      if (window.YT && YT.Player) return cb();
+      const s=document.createElement('script');
+      s.src="https://www.youtube.com/iframe_api";
+      window.onYouTubeIframeAPIReady=()=>{ ytReady=true; cb(); };
+      document.head.appendChild(s);
+    }
+    function setupPlayer(){
+      if (player || !(window.YT && YT.Player)) return;
+      player = new YT.Player('ytplayer', {
+        height:'100%', width:'100%',
+        playerVars:{ controls:1, modestbranding:1, rel:0 },
+        events:{ onStateChange: (e)=>{ if(e.data===YT.PlayerState.ENDED) nextTrack(); updatePlayIcon(); } }
+      });
+    }
+    function getYouTubeId(u){
+      try{
+        const url=new URL(u);
+        if(url.hostname.includes('youtu.be')) return url.pathname.slice(1);
+        return url.searchParams.get('v') || null;
+      }catch{ return null }
+    }
+    function shuffle(arr){
+      const a=arr.slice();
+      for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+      return a;
+    }
+    async function refreshPlaylist(){
+      // fetch all items for player
+      let page=1, pageSize=100, acc=[];
+      while(true){
+        const r=await fetch(`${API}/api/music?page=${page}&pageSize=${pageSize}`,{cache:'no-store'});
+        if(!r.ok) break;
+        const j=await r.json();
+        acc.push(...(j.items||[]));
+        if(page>= (j.pages||1)) break;
+        page++;
+      }
+      allMusic = acc;
+    }
+    function playIndex(i){
+      if(!queue.length) return;
+      cursor = (i+queue.length)%queue.length;
+      const it = queue[cursor];
+      const vid = getYouTubeId(it.url);
+      if(!vid){ nextTrack(); return; }
+      nowTitle.textContent = it.title;
+      if(player && player.loadVideoById) player.loadVideoById(vid);
+    }
+    function nextTrack(){ if(queue.length) playIndex(cursor+1); }
+    function startShuffle(){
+      if(!allMusic.length) return;
+      queue = shuffle(allMusic);
+      playIndex(0);
+    }
+    function startPlayerWithTrack(m){
+      ensureYT(()=>{ setupPlayer(); if(!allMusic.length) allMusic=[m]; queue=[m]; playIndex(0); });
+    }
+    function updatePlayIcon(){
+      if(!player || !window.YT) return;
+      const st = player.getPlayerState?.();
+      btnPlay.textContent = (st===YT.PlayerState.PLAYING) ? '▌▌' : '▶';
+    }
+
+    btnShuffle.addEventListener('click', async ()=>{
+      await refreshPlaylist();
+      ensureYT(()=>{ setupPlayer(); startShuffle(); updatePlayIcon(); });
+    });
+    btnPlay.addEventListener('click', ()=>{
+      ensureYT(()=>{ setupPlayer();
+        if(!player) return;
+        const st=player.getPlayerState?.();
+        if(st===YT.PlayerState.PLAYING) player.pauseVideo(); else player.playVideo();
+        setTimeout(updatePlayIcon, 120);
+      });
+    });
+    btnNext.addEventListener('click', ()=> nextTrack());
+
+    // boot
+    (async()=>{ await refreshMe(); await listComments(1); await listMusic(1); await refreshPlaylist(); })();
+  </script>
+</body>
+</html>
