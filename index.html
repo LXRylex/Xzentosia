@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>★ dasu ★</title>
+  <title>★ Old Internet Home ★</title>
   <meta name="color-scheme" content="dark">
   <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
   <style>
@@ -58,20 +58,35 @@
     .gb-entry .meta{ opacity:.7; font-size:16px }
 
     /* top-right user bar */
-    #topbar{position:fixed;top:10px;right:10px;display:none;align-items:center;gap:8px;background:#111126;border:2px ridge #7d7db0;padding:6px 10px;border-radius:10px;z-index:2}
+    #topbar{
+      position:fixed;top:10px;right:10px;display:none;z-index:3;
+      background:#111126;border:2px ridge #7d7db0;padding:6px 10px;border-radius:10px;
+    }
+    #topbar .row{ display:flex; align-items:center; gap:8px }
     #topbar .pfp{width:26px;height:26px;border-radius:50%;background:#2a2a5a;display:grid;place-items:center;font-weight:700;color:#fff;overflow:hidden;font-size:14px}
     #topbar .pfp.img{background-size:cover;background-position:center}
     #topbar .name{font-weight:700; color:#e6deff; font-size:16px}
 
-    /* profile panel */
+    /* dropdown anchored to the topbar (no duplicate username) */
+    #userMenu{
+      position:absolute; top:calc(100% + 8px); right:0; display:none;
+      min-width:140px; background:#111126; border:3px ridge #7d7db0; border-radius:12px;
+      padding:8px 10px; box-shadow:0 8px 24px rgba(0,0,0,.5);
+    }
+    #userMenu .logout-link{ color:#c0a6ff; font-weight:700; font-size:16px; text-decoration:none }
+    #userMenu .logout-link:hover{ text-decoration:underline }
+
+    /* profile panel (left) — keep original scale */
     .profile-card{ text-align:center }
-    .profile-card img{ width:100%; max-width:182px; aspect-ratio:1/1; object-fit:cover;
-      border:3px ridge #7d7db0; border-radius:10px; display:block; margin:4px auto 6px }
-    .profile-card .nm{ font-weight:700; color:#e6deff; font-size:20px }
-    .profile-card .tag{ color:#c8c8ff; opacity:.85; font-size:18px }
+    .profile-card img{
+      width:100%; max-width:160px; aspect-ratio:1/1; object-fit:cover;
+      border:3px ridge #7d7db0; border-radius:10px; display:block; margin:4px auto 6px
+    }
+    .profile-card .nm{ font-weight:700; color:#e6deff; font-size:18px }
+    .profile-card .tag{ color:#c8c8ff; opacity:.85; font-size:16px }
     .socials{display:flex;flex-direction:column;gap:6px;margin-top:8px}
     .sbtn{
-      display:block; width:100%; text-align:center; padding:6px 8px; color:#fff; text-decoration:none; font-weight:700; font-size:18px;
+      display:block; width:100%; text-align:center; padding:6px 8px; color:#fff; text-decoration:none; font-weight:700; font-size:16px;
       border:2px outset #404080; background:linear-gradient(180deg,#2a2a5a,#1c1c44); text-shadow:0 1px 0 #000
     }
     .sbtn:hover{filter:brightness(1.15)}
@@ -95,13 +110,9 @@
     .mlink:hover{ filter:brightness(1.15) }
     .trash{ float:right; color:#e74c3c; cursor:pointer; }
 
-    /* player panel */
+    /* player */
     #playerPanel .controls{ display:flex; gap:6px; flex-wrap:wrap; margin:6px 0 }
-    #ytwrap{
-      width:100%;
-      border:2px inset #3a3a6a; background:#000; overflow:hidden;
-      aspect-ratio:16/9;
-    }
+    #ytwrap{ width:100%; border:2px inset #3a3a6a; background:#000; overflow:hidden; aspect-ratio:16/9; }
     #ytplayer{ width:100%; height:100% }
 
     /* compact icon buttons */
@@ -128,7 +139,7 @@
       .rightbar{ border-top:3px groove #67679b; display:none; }
       .btn{ display:block; width:100%; text-align:left }
       .sbtn{ width:100% }
-      .profile-card img{ max-width:170px }
+      .profile-card img{ max-width:140px }
       #commentsList{ max-height:48vh }
       #topbar{ right:6px; top:6px; }
     }
@@ -231,16 +242,23 @@
     })();
   </script>
 
-  <!-- top-right profile -->
-  <div id="topbar"><div class="pfp" id="pfp">?</div><div class="name" id="uNameBar">—</div></div>
+  <!-- top-right profile (with anchored dropdown) -->
+  <div id="topbar">
+    <div class="row">
+      <div class="pfp" id="pfp">?</div><div class="name" id="uNameBar">—</div>
+    </div>
+    <div id="userMenu">
+      <a href="#" id="logoutLink" class="logout-link">Log out</a>
+    </div>
+  </div>
 
   <div class="wrap">
     <table>
       <tr><td colspan="3" class="banner">
         <div class="marq">
           <div class="ticker">
-            <span>★ Welcome to idk ★</span>
-               <span aria-hidden="true"></span>
+            <span>★ Welcome to the random place i made ★</span>
+            <span aria-hidden="true"></span>
           </div>
         </div>
         <style>
@@ -249,7 +267,7 @@
           .ticker span{display:inline-block; padding-right:2rem}
           @keyframes tick{from{transform:translateX(0)} to{transform:translateX(-100%)}}
         </style>
-        <h1>   </h1>
+        <h1>Hoi</h1>
       </td></tr>
 
       <tr class="row">
@@ -310,7 +328,7 @@
             <div id="authRow" style="display:flex;align-items:center;gap:8px;margin:6px 0 10px">
               <button id="loginBtn" class="btn">Login with Discord</button>
               <div id="userInfo" class="mini" style="display:none">
-                Signed in as <strong id="uName"></strong> · <a id="logoutLink" href="#">Logout</a>
+                Signed in as <strong id="uName"></strong>
               </div>
             </div>
             <div id="commentsList"></div>
@@ -380,11 +398,15 @@
     const loginBtn=document.getElementById('loginBtn');
     const userInfo=document.getElementById('userInfo');
     const uNameEl=document.getElementById('uName');
+
+    // topbar + dropdown
     const topbar=document.getElementById('topbar');
     const pfpEl=document.getElementById('pfp');
     const uNameBar=document.getElementById('uNameBar');
+    const userMenu=document.getElementById('userMenu');
+    const logoutLink=document.getElementById('logoutLink');
 
-    // elements (music)
+    // music + player
     const musicForm=document.getElementById('musicForm');
     const mTitle=document.getElementById('mTitle');
     const mURL=document.getElementById('mURL');
@@ -392,7 +414,6 @@
     const musicList=document.getElementById('musicList');
     const musicPager=document.getElementById('musicPager');
 
-    // elements (player)
     const nowTitle=document.getElementById('nowTitle');
     const btnShuffle=document.getElementById('btnShuffle');
     const btnPlay=document.getElementById('btnPlay');
@@ -401,15 +422,14 @@
     let ME=null, PAGE=1, PAGES=1, PAGE_SIZE=20;
     let MPAGE=1, MPAGES=1, MPAGE_SIZE=12;
 
-    // player state
-    let allMusic=[], queue=[], cursor=-1, ytReady=false, player=null;
+    let allMusic=[], queue=[], cursor=-1, player=null;
 
     const esc=(s)=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
     const setStatus=(el,t)=>el&&(el.textContent=t||'');
 
     async function getMe(){ try{ const r=await fetch(API+'/api/me'); if(!r.ok) return null; return await r.json(); } catch{ return null } }
     function showTopBar(un,me){
-      topbar.style.display='flex'; uNameBar.textContent=un;
+      topbar.style.display='block'; uNameBar.textContent=un;
       if(me&&me.avatar){
         const url=`https://cdn.discordapp.com/avatars/${me.id}/${me.avatar}.webp?size=64`;
         pfpEl.style.backgroundImage=`url(${url})`; pfpEl.textContent=''; pfpEl.classList.add('img');
@@ -417,6 +437,25 @@
         pfpEl.style.backgroundImage=''; pfpEl.textContent=(un[0]||'?').toUpperCase(); pfpEl.classList.remove('img');
       }
     }
+
+    // open/close menu anchored to profile
+    topbar.addEventListener('click', (e)=>{
+      if(userMenu.contains(e.target)) return;         // keep menu clicks from toggling parent
+      userMenu.style.display = (userMenu.style.display==='block') ? 'none' : 'block';
+    });
+    userMenu.addEventListener('click', (e)=>e.stopPropagation());
+    document.addEventListener('click', (e)=>{
+      if(userMenu.style.display==='block' && !topbar.contains(e.target)){
+        userMenu.style.display='none';
+      }
+    });
+
+    logoutLink.addEventListener('click', (e)=>{
+      e.preventDefault();
+      localStorage.removeItem('sid');
+      const back=location.href; location.href=API+'/api/logout?redirect='+encodeURIComponent(back);
+    });
+
     async function refreshMe(){
       ME=await getMe();
       if(ME){
@@ -425,7 +464,8 @@
         showTopBar(un,ME);
         if(String(ME.id)===String(ADMIN_ID)) musicForm.style.display='block';
       }else{
-        loginBtn.style.display=''; userInfo.style.display='none'; formEl.style.display='none'; topbar.style.display='none';
+        loginBtn.style.display=''; userInfo.style.display='none'; formEl.style.display='none';
+        topbar.style.display='none'; userMenu.style.display='none';
         musicForm.style.display='none';
       }
     }
@@ -494,10 +534,6 @@
     document.getElementById('loginBtn').addEventListener('click', ()=>{
       const back=location.href; location.href=API+'/api/login?redirect='+encodeURIComponent(back);
     });
-    document.getElementById('logoutLink').addEventListener('click', (e)=>{
-      e.preventDefault(); localStorage.removeItem('sid');
-      const back=location.href; location.href=API+'/api/logout?redirect='+encodeURIComponent(back);
-    });
 
     // ---------- Music (list) ----------
     async function listMusic(p=MPAGE){
@@ -513,11 +549,10 @@
       for(const m of items){
         const a=document.createElement('a');
         a.className='mlink';
-        a.href = `${API}/m/${encodeURIComponent(m.id)}`;  // hides real URL
+        a.href = `${API}/m/${encodeURIComponent(m.id)}`;
         a.target = '_blank'; a.rel='noopener';
         const when = m.ts ? new Date(m.ts).toLocaleDateString() : '';
         a.innerHTML = `▶ ${esc(m.title)} <span class="mini">(${when})</span>`;
-        // play inside player unless user ctrl/cmd-clicks
         a.addEventListener('click', (ev)=>{
           if(ev.metaKey || ev.ctrlKey) return;
           ev.preventDefault();
@@ -555,35 +590,12 @@
       musicPager.appendChild(btn('Next',()=>{ if(MPAGE<MPAGES) listMusic(MPAGE+1); },{disabled:MPAGE===MPAGES}));
     }
 
-    musicForm.addEventListener('submit', async (ev)=>{
-      ev.preventDefault();
-      const title=(mTitle.value||'').trim();
-      const url=(mURL.value||'').trim();
-      if(!title || !url) return setStatus(mStatus,'Fill title and YouTube link');
-      setStatus(mStatus,'Saving…');
-      try{
-        const r=await fetch(`${API}/api/music`,{
-          method:'POST', headers:{'Content-Type':'application/json'},
-          body: JSON.stringify({ title, url })
-        });
-        if(r.ok){
-          mTitle.value=''; mURL.value='';
-          setStatus(mStatus,'Saved');
-          await refreshPlaylist();
-          await listMusic(1);
-        } else {
-          const j=await r.json().catch(()=>({}));
-          setStatus(mStatus, j?.error || 'Save failed');
-        }
-      }catch{ setStatus(mStatus,'Save failed'); }
-    });
-
     // ---------- Player (YouTube) ----------
     function ensureYT(cb){
       if (window.YT && YT.Player) return cb();
       const s=document.createElement('script');
       s.src="https://www.youtube.com/iframe_api";
-      window.onYouTubeIframeAPIReady=()=>{ ytReady=true; cb(); };
+      window.onYouTubeIframeAPIReady=()=>{ cb(); };
       document.head.appendChild(s);
     }
     function setupPlayer(){
@@ -607,7 +619,6 @@
       return a;
     }
     async function refreshPlaylist(){
-      // fetch all items for player
       let page=1, pageSize=100, acc=[];
       while(true){
         const r=await fetch(`${API}/api/music?page=${page}&pageSize=${pageSize}`,{cache:'no-store'});
@@ -629,13 +640,9 @@
       if(player && player.loadVideoById) player.loadVideoById(vid);
     }
     function nextTrack(){ if(queue.length) playIndex(cursor+1); }
-    function startShuffle(){
-      if(!allMusic.length) return;
-      queue = shuffle(allMusic);
-      playIndex(0);
-    }
+    function startShuffle(){ if(!allMusic.length) return; queue = shuffle(allMusic); playIndex(0); }
     function startPlayerWithTrack(m){
-      ensureYT(()=>{ setupPlayer(); if(!allMusic.length) allMusic=[m]; queue=[m]; playIndex(0); });
+      ensureYT(()=>{ setupPlayer(); if(!allMusic.length) allMusic=[m]; queue=[m]; playIndex(0); updatePlayIcon(); });
     }
     function updatePlayIcon(){
       if(!player || !window.YT) return;
@@ -643,18 +650,8 @@
       btnPlay.textContent = (st===YT.PlayerState.PLAYING) ? '▌▌' : '▶';
     }
 
-    btnShuffle.addEventListener('click', async ()=>{
-      await refreshPlaylist();
-      ensureYT(()=>{ setupPlayer(); startShuffle(); updatePlayIcon(); });
-    });
-    btnPlay.addEventListener('click', ()=>{
-      ensureYT(()=>{ setupPlayer();
-        if(!player) return;
-        const st=player.getPlayerState?.();
-        if(st===YT.PlayerState.PLAYING) player.pauseVideo(); else player.playVideo();
-        setTimeout(updatePlayIcon, 120);
-      });
-    });
+    btnShuffle.addEventListener('click', async ()=>{ await refreshPlaylist(); ensureYT(()=>{ setupPlayer(); startShuffle(); updatePlayIcon(); }); });
+    btnPlay.addEventListener('click', ()=>{ ensureYT(()=>{ setupPlayer(); if(!player) return; const st=player.getPlayerState?.(); if(st===YT.PlayerState.PLAYING) player.pauseVideo(); else player.playVideo(); setTimeout(updatePlayIcon,120); }); });
     btnNext.addEventListener('click', ()=> nextTrack());
 
     // boot
