@@ -36,6 +36,7 @@
       display:inline-block; margin:6px 0; padding:8px 10px; color:#fff; text-decoration:none; font-weight:700;
       border:2px outset #404080; background:linear-gradient(180deg,#2a2a5a,#1c1c44); text-shadow:0 1px 0 #000; font-size:18px;
     }
+    .btn.sm{ font-size:16px; padding:6px 10px; margin:4px 6px 0 0 }
     .btn:hover{ filter:brightness(1.2) }
     .blink{ animation:blink 1s step-end infinite } @keyframes blink{ 50%{opacity:0} }
     .panel{ border:3px ridge #7d7db0; background:#111126; padding:10px; margin:10px 0 }
@@ -67,7 +68,7 @@
     #topbar .pfp.img{background-size:cover;background-position:center}
     #topbar .name{font-weight:700; color:#e6deff; font-size:16px}
 
-    /* dropdown anchored to the topbar (no duplicate username) */
+    /* dropdown anchored to the topbar */
     #userMenu{
       position:absolute; top:calc(100% + 8px); right:0; display:none;
       min-width:140px; background:#111126; border:3px ridge #7d7db0; border-radius:12px;
@@ -115,16 +116,22 @@
     #ytwrap{ width:100%; border:2px inset #3a3a6a; background:#000; overflow:hidden; aspect-ratio:16/9; }
     #ytplayer{ width:100%; height:100% }
 
-    /* compact icon buttons */
-    .icon-btn{
-      width:34px; height:34px; padding:0; line-height:1;
-      display:inline-grid; place-items:center;
-      font:700 18px 'VT323', monospace;
-      color:#fff; text-shadow:0 1px 0 #000;
-      border:2px outset #404080;
-      background:linear-gradient(180deg,#2a2a5a,#1c1c44);
+    /* Projects view */
+    #projectsView{ display:none }
+    .filters{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:8px }
+    .pill{
+      border:2px outset #404080; background:linear-gradient(180deg,#2a2a5a,#1c1c44);
+      color:#fff; font-weight:700; padding:4px 10px; font-size:16px; cursor:var(--cursor), pointer;
     }
-    .icon-btn:hover{ filter:brightness(1.15) }
+    .pill.active{ outline:2px solid #b38aff }
+    .searchbox{
+      flex:1 1 200px; min-width:180px; background:#0e0e22; color:#fff; border:2px inset #3a3a6a; padding:6px; font-size:18px
+    }
+    .grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:10px }
+    .card{ border:3px ridge #7d7db0; background:#111126; padding:10px; }
+    .card h3{ margin:0 0 6px; font-size:20px; color:#e6deff }
+    .tags{ display:flex; flex-wrap:wrap; gap:4px; margin-top:6px }
+    .tag{ font-size:14px; color:#c8c8ff; opacity:.85; border:1px solid #3a3a6a; padding:1px 6px }
 
     /* Mobile */
     @media (max-width: 960px){
@@ -142,11 +149,13 @@
       .profile-card img{ max-width:140px }
       #commentsList{ max-height:48vh }
       #topbar{ right:6px; top:6px; }
+      .grid{ grid-template-columns:1fr 1fr }
     }
     @media (max-width:560px){
       body{ font-size:20px }
       .guestbook #commentForm{ grid-template-columns:1fr; }
       #commentForm .btn{ width:100%; height:auto; }
+      .grid{ grid-template-columns:1fr }
     }
   </style>
 
@@ -257,7 +266,7 @@
       <tr><td colspan="3" class="banner">
         <div class="marq">
           <div class="ticker">
-            <span>★ Welcome to the random place i made ★</span>
+            <span>★ ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ ᴛʜᴇ ʀᴀɴᴅᴏᴍ ᴘʟᴀᴄᴇ ɪ ᴍᴀᴅᴇ ★</span>
             <span aria-hidden="true"></span>
           </div>
         </div>
@@ -267,7 +276,7 @@
           .ticker span{display:inline-block; padding-right:2rem}
           @keyframes tick{from{transform:translateX(0)} to{transform:translateX(-100%)}}
         </style>
-        <h1>Hoi</h1>
+        <h1 id="bannerTitle">Hoi</h1>
       </td></tr>
 
       <tr class="row">
@@ -276,81 +285,113 @@
           <div class="panel profile-card">
             <img src="./assets/custom/profile.png" alt="Profile">
             <div class="nm">Yui</div>
-            <div class="tag">artist • coder</div>
+            <div class="tag">ᴀʀᴛɪꜱᴛ • ᴄᴏᴅᴇʀ</div>
             <div class="socials">
-              <a class="sbtn" href="https://discord.com/users/579784411441135636" target="_blank" rel="noopener">Discord</a>
-              <a class="sbtn" href="https://github.com/LXRylex" target="_blank" rel="noopener">GitHub</a>
-              <a class="sbtn" href="https://instagram.com/lxdasu" target="_blank" rel="noopener">Instagram</a>
+              <a class="sbtn" href="https://discord.com/users/579784411441135636" target="_blank" rel="noopener">ᴅɪꜱᴄᴏʀᴅ</a>
+              <a class="sbtn" href="https://github.com/LXRylex" target="_blank" rel="noopener">ɢɪᴛʜᴜʙ</a>
+              <a class="sbtn" href="https://instagram.com/lxdasu" target="_blank" rel="noopener">ɪɴꜱᴛᴀɢʀᴀᴍ</a>
+              <!-- TOGGLER -->
+              <a class="sbtn" id="projectsToggle" href="#">ᴘʀᴏᴊᴇᴄᴛꜱ</a>
             </div>
           </div>
 
-          <a class="btn" href="#home">» Home</a>
-          <a class="btn" href="#about">» About</a>
-          <a class="btn" href="#links">» Links <span class="blink">NEW!</span></a>
-          <a class="btn" href="#guestbook">» Guestbook</a>
+          <a class="btn" href="#home">» ʜᴏᴍᴇ</a>
+          <a class="btn" href="#about">» ᴀʙᴏᴜᴛ</a>
+          <a class="btn" href="#links">» ʟɪɴᴋꜱ <span class="blink">ɴᴇᴡ
+!</span></a>
+          <a class="btn" href="#guestbook">» ɢᴜᴇꜱᴛʙᴏᴏᴋ</a>
 
           <div class="panel">
-            <h2>Under Construction</h2>
-            <p>I have no wise words to say yet</p>
+            <h2>ᴜɴᴅᴇʀ ᴄᴏɴꜱᴛʀᴜᴄᴛɪᴏɴ</h2>
+            <p>ɪ ʜᴀᴠᴇ ɴᴏ ᴡɪꜱᴇ ᴡᴏʀᴅꜱ ᴛᴏ ꜱᴀʏ ʏᴇᴛ</p>
             <div class="badges">
-              <div class="badge">Best Viewed 1024×768</div>
-              <div class="badge alt">Made on HTML</div>
-              <div class="badge">No Flash</div>
+              <div class="badge"></div>
+              <div class="badge alt"></div>
+              <div class="badge"></div>
             </div>
           </div>
         </td>
 
         <!-- MAIN CONTENT -->
         <td class="content">
-          <div id="home" class="panel">
-            <h2>Welcome, net-traveler!</h2>
-            <p>Enjoy around i guess xD</p>
-            <div class="hr"></div>
-            <p><strong>Uhhh...</strong> <em><span class="glitter">I make pretty things hurt</span></em></p>
-          </div>
-
-          <div id="about" class="panel">
-            <h2>About</h2>
-            <p>I like drawing and listen to music i do some coding time to time</p>
-          </div>
-
-          <div id="links" class="panel">
-            <h2>Cool Links</h2>
-            <ul>
-              <li>» <a href="#">theres</a></li>
-              <li>» <a href="#">no</a></li>
-              <li>» <a href="#">links yet</a></li>
-            </ul>
-          </div>
-
-          <div id="guestbook" class="panel guestbook">
-            <h2>Guestbook</h2>
-            <div id="authRow" style="display:flex;align-items:center;gap:8px;margin:6px 0 10px">
-              <button id="loginBtn" class="btn">Login with Discord</button>
-              <div id="userInfo" class="mini" style="display:none">
-                Signed in as <strong id="uName"></strong>
-              </div>
+          <!-- PROFILE VIEWS (original) -->
+          <div id="profileViews">
+            <div id="home" class="panel">
+              <h2>ᴡᴇʟᴄᴏᴍᴇ</h2>
+              <p>ᴇɴᴊᴏʏ ᴀʀᴏᴜɴᴅ ɪ ɢᴜᴇꜱꜱ xᴅ</p>
+              <div class="hr"></div>
+              <p><strong>Uhhh...</strong> <em><span class="glitter">ʇɹnɥ sɓuıɥʇ ʎʇʇǝɹd ǝʞɐɯ I</span></em></p>
             </div>
-            <div id="commentsList"></div>
-            <div id="pager"></div>
-            <form id="commentForm" style="margin-top:8px;display:none">
-              <textarea name="content" placeholder="Say hi (plain text only)" maxlength="500"></textarea>
-              <button class="btn" type="submit">Post</button>
-            </form>
-            <div class="mini" id="cStatus"></div>
+
+            <div id="about" class="panel">
+              <h2>ᴀʙᴏᴜᴛ</h2>
+              <p>ɪ ʟɪᴋᴇ ᴅʀᴀᴡɪɴɢ ᴀɴᴅ ʟɪꜱᴛᴇɴ ᴛᴏ ᴍᴜꜱɪᴄ ɪ ᴅᴏ ꜱᴏᴍᴇ ᴄᴏᴅɪɴɢ ᴛɪᴍᴇ ᴛᴏ ᴛɪᴍᴇ</p>
+            </div>
+
+            <div id="links" class="panel">
+              <h2>ᴄᴏᴏʟ ʟɪɴᴋꜱ</h2>
+              <ul>
+                <li>» <a href="#">ᴛʜᴇʀᴇꜱ</a></li>
+                <li>» <a href="#">ɴᴏ</a></li>
+                <li>» <a href="#">ʟɪɴᴋꜱ ʏᴇᴛ</a></li>
+              </ul>
+            </div>
+
+            <div id="guestbook" class="panel guestbook">
+              <h2>ɢᴜᴇꜱᴛʙᴏᴏᴋ</h2>
+              <div id="authRow" style="display:flex;align-items:center;gap:8px;margin:6px 0 10px">
+                <button id="loginBtn" class="btn">ʟᴏɢɪɴ ᴡɪᴛʜ ᴅɪꜱᴄᴏʀᴅ ᴛᴏ ᴄᴏᴍᴍᴇɴᴛ</button>
+                <div id="userInfo" class="mini" style="display:none">
+                  ꜱɪɢɴᴇᴅ ɪɴ ᴀꜱ <strong id="uName"></strong>
+                </div>
+              </div>
+              <div id="commentsList"></div>
+              <div id="pager"></div>
+              <form id="commentForm" style="margin-top:8px;display:none">
+                <textarea name="content" placeholder="Say something idk" maxlength="500"></textarea>
+                <button class="btn" type="submit">ᴘᴏꜱᴛ</button>
+              </form>
+              <div class="mini" id="cStatus"></div>
+            </div>
+          </div>
+
+          <!-- PROJECTS VIEW -->
+          <div id="projectsView" class="panel">
+            <h2>Projects</h2>
+            <!-- Filters row -->
+            <div class="filters">
+              <button class="pill" data-type="all">All</button>
+              <button class="pill" data-type="web">Web</button>
+              <button class="pill" data-type="tool">Tool</button>
+              <button class="pill" data-type="game">Game</button>
+              <button class="pill" data-type="art">Art</button>
+              <input id="projSearch" class="searchbox" type="search" placeholder="Search title or tags">
+            </div>
+            <!-- Lang row -->
+            <div class="filters">
+              <button class="pill" data-lang="all">Any Lang</button>
+              <button class="pill" data-lang="html">HTML/CSS</button>
+              <button class="pill" data-lang="js">JavaScript</button>
+              <button class="pill" data-lang="ts">TypeScript</button>
+              <button class="pill" data-lang="py">Python</button>
+              <button class="pill" data-lang="cs">C#</button>
+              <button class="pill" data-lang="other">Other</button>
+            </div>
+            <div id="projGrid" class="grid"></div>
+            <div id="projStatus" class="mini"></div>
           </div>
         </td>
 
         <!-- RIGHT PANEL (Music + Player) -->
         <td class="rightbar">
           <div class="panel">
-            <h2>Music Box</h2>
+            <h2>ᴍᴜꜱɪᴄ ʙᴏx</h2>
             <form id="musicForm" style="display:none; margin-bottom:10px">
               <input id="mTitle" type="text" placeholder="Track title" style="width:100%;margin-bottom:6px;
                 background:#0e0e22;color:#fff;border:2px inset #3a3a6a;padding:6px;font-size:18px">
               <input id="mURL" type="text" placeholder="YouTube link" style="width:100%;margin-bottom:6px;
                 background:#0e0e22;color:#fff;border:2px inset #3a3a6a;padding:6px;font-size:18px">
-              <button class="btn" type="submit">Save</button>
+              <button class="btn" type="submit">ꜱᴀᴠᴇ</button>
               <div class="mini" id="mStatus"></div>
             </form>
 
@@ -359,7 +400,7 @@
 
             <!-- Player -->
             <div id="playerPanel" class="panel" style="margin-top:12px">
-              <h2>Player</h2>
+              <h2>M-Player</h2>
               <div id="nowTitle" class="mini" style="margin-bottom:6px">—</div>
               <div class="controls">
                 <button class="icon-btn" id="btnShuffle" title="Shuffle">↻</button>
@@ -385,10 +426,16 @@
     document.getElementById("updated").textContent="Last updated: "+new Date().toLocaleString();
   </script>
 
-  <!-- app: comments + music + player -->
+  <!-- app: comments + music + player + projects -->
   <script>
     const API='https://profile-7xr4.onrender.com';
     const ADMIN_ID='579784411441135636';
+
+    // ====== STATIC PROJECTS (built-in) ======
+    const PROJECTS = [
+
+      { id:'p11', title:'uSwitch: Reddit Accounts', year:2024, type:'tool', lang:['js'], tags:['userscript','reddit','multi-account','switcher'], desc:'One-click switch between saved Reddit accounts (local profile store + hotkeys).', url:'https://xzentosia.neocities.org/Ghosty/uSwitchRedditAccounts/', repo:'https://github.com/LXRylex/Xzen-Reddit-Account-Switcher' },
+    ];
 
     // elements (comments)
     const listEl=document.getElementById('commentsList');
@@ -405,6 +452,7 @@
     const uNameBar=document.getElementById('uNameBar');
     const userMenu=document.getElementById('userMenu');
     const logoutLink=document.getElementById('logoutLink');
+    const bannerTitle=document.getElementById('bannerTitle');
 
     // music + player
     const musicForm=document.getElementById('musicForm');
@@ -419,10 +467,31 @@
     const btnPlay=document.getElementById('btnPlay');
     const btnNext=document.getElementById('btnNext');
 
+    // projects
+    const projectsToggle=document.getElementById('projectsToggle');
+    const profileViews=document.getElementById('profileViews');
+    const projectsView=document.getElementById('projectsView');
+    const projGrid=document.getElementById('projGrid');
+    const projStatus=document.getElementById('projStatus');
+    const projSearch=document.getElementById('projSearch');
+
     let ME=null, PAGE=1, PAGES=1, PAGE_SIZE=20;
     let MPAGE=1, MPAGES=1, MPAGE_SIZE=12;
 
     let allMusic=[], queue=[], cursor=-1, player=null;
+
+    // -------- player duplicate fixes --------
+    let lastVid = null;
+    const uniqByVideo = (arr) => {
+      const seen = new Set(), out = [];
+      for (const it of arr) {
+        const v = getYouTubeId(it.url);
+        if (!v || seen.has(v)) continue;
+        seen.add(v);
+        out.push(it);
+      }
+      return out;
+    };
 
     const esc=(s)=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
     const setStatus=(el,t)=>el&&(el.textContent=t||'');
@@ -440,7 +509,7 @@
 
     // open/close menu anchored to profile
     topbar.addEventListener('click', (e)=>{
-      if(userMenu.contains(e.target)) return;         // keep menu clicks from toggling parent
+      if(userMenu.contains(e.target)) return;
       userMenu.style.display = (userMenu.style.display==='block') ? 'none' : 'block';
     });
     userMenu.addEventListener('click', (e)=>e.stopPropagation());
@@ -628,7 +697,7 @@
         if(page>= (j.pages||1)) break;
         page++;
       }
-      allMusic = acc;
+      allMusic = uniqByVideo(acc);
     }
     function playIndex(i){
       if(!queue.length) return;
@@ -637,12 +706,44 @@
       const vid = getYouTubeId(it.url);
       if(!vid){ nextTrack(); return; }
       nowTitle.textContent = it.title;
+      lastVid = vid;
       if(player && player.loadVideoById) player.loadVideoById(vid);
     }
-    function nextTrack(){ if(queue.length) playIndex(cursor+1); }
-    function startShuffle(){ if(!allMusic.length) return; queue = shuffle(allMusic); playIndex(0); }
+    function nextTrack(){
+      if(!queue.length) return;
+      if(queue.length === 1) return;
+      const curVid = getYouTubeId(queue[cursor]?.url) || lastVid;
+      for(let step=1; step<=queue.length; step++){
+        const idx = (cursor + step) % queue.length;
+        const vid = getYouTubeId(queue[idx]?.url);
+        if(vid && vid !== curVid){
+          playIndex(idx);
+          return;
+        }
+      }
+    }
+    function startShuffle(){
+      if(!allMusic.length) return;
+      const list = shuffle(uniqByVideo(allMusic));
+      const curVid = getYouTubeId(queue[cursor]?.url) || lastVid;
+      let startIdx = 0;
+      if(curVid && list.length > 1){
+        const idx = list.findIndex(x => getYouTubeId(x.url) !== curVid);
+        startIdx = (idx === -1) ? 0 : idx;
+      }
+      queue = list;
+      playIndex(startIdx);
+    }
     function startPlayerWithTrack(m){
-      ensureYT(()=>{ setupPlayer(); if(!allMusic.length) allMusic=[m]; queue=[m]; playIndex(0); updatePlayIcon(); });
+      ensureYT(()=>{ 
+        setupPlayer();
+        const cur = getYouTubeId(m.url);
+        const base = allMusic.length ? allMusic : [m];
+        const rest = uniqByVideo(base).filter(x => getYouTubeId(x.url) !== cur);
+        queue = [{...m}, ...rest];
+        playIndex(0);
+        updatePlayIcon();
+      });
     }
     function updatePlayIcon(){
       if(!player || !window.YT) return;
@@ -654,8 +755,103 @@
     btnPlay.addEventListener('click', ()=>{ ensureYT(()=>{ setupPlayer(); if(!player) return; const st=player.getPlayerState?.(); if(st===YT.PlayerState.PLAYING) player.pauseVideo(); else player.playVideo(); setTimeout(updatePlayIcon,120); }); });
     btnNext.addEventListener('click', ()=> nextTrack());
 
-    // boot
-    (async()=>{ await refreshMe(); await listComments(1); await listMusic(1); await refreshPlaylist(); })();
+    // ---------- Projects (purely from in-HTML list) ----------
+    let projectsLoaded = false;
+    let projState = { type:'all', lang:'all', q:'' };
+
+    function renderProjects(){
+      const pillsType=[...document.querySelectorAll('[data-type]')];
+      const pillsLang=[...document.querySelectorAll('[data-lang]')];
+      pillsType.forEach(p=>p.classList.toggle('active', p.dataset.type===projState.type));
+      pillsLang.forEach(p=>p.classList.toggle('active', p.dataset.lang===projState.lang));
+
+      const q = projState.q.toLowerCase().trim();
+      let items = PROJECTS.slice();
+
+      items = items.filter(p=>{
+        const matchType = projState.type==='all' || p.type===projState.type;
+        const langs = (p.lang||[]).map(x=>String(x).toLowerCase());
+        const matchLang = projState.lang==='all' || langs.includes(projState.lang);
+        const hay = (p.title+' '+(p.tags||[]).join(' ')+(p.desc||'')).toLowerCase();
+        const matchQ = !q || hay.includes(q);
+        return matchType && matchLang && matchQ;
+      });
+
+      projGrid.innerHTML = items.map(p => `
+        <div class="card">
+          <h3>${esc(p.title)}</h3>
+          <div class="mini">${p.year?('Year: '+p.year+' • '):''}${p.type.toUpperCase()}</div>
+          <p style="margin:6px 0">${esc(p.desc||'')}</p>
+          <div class="tags">
+            ${(p.lang||[]).map(t=>`<span class="tag">${esc(String(t).toUpperCase())}</span>`).join('')}
+            ${(p.tags||[]).map(t=>`<span class="tag">${esc(String(t))}</span>`).join('')}
+          </div>
+          <div class="hr"></div>
+          <div class="mini">
+            <a class="btn sm view-btn" href="${esc(p.url||'')}" target="_blank" rel="noopener">View</a>
+            ${p.repo ? `<a class="btn sm" href="${esc(p.repo)}" target="_blank" rel="noopener">Repo</a>` : ''}
+          </div>
+        </div>
+      `).join('');
+
+      projStatus.textContent = items.length ? '' : 'No projects match these filters.';
+      projectsLoaded = true;
+    }
+
+    // prevent navigation when View has no link (href is blank)
+    document.addEventListener('click', (e)=>{
+      const a = e.target.closest('.view-btn');
+      if(!a) return;
+      const href = a.getAttribute('href') || '';
+      if(href.trim()===''){ e.preventDefault(); }
+    });
+
+    // filter controls
+    document.querySelectorAll('[data-type]').forEach(el=>{
+      el.addEventListener('click', ()=>{
+        projState.type = el.dataset.type;
+        renderProjects();
+      });
+    });
+    document.querySelectorAll('[data-lang]').forEach(el=>{
+      el.addEventListener('click', ()=>{
+        projState.lang = el.dataset.lang;
+        renderProjects();
+      });
+    });
+    projSearch.addEventListener('input', ()=>{
+      projState.q = projSearch.value || '';
+      renderProjects();
+    });
+
+    // toggler
+    let showingProjects=false;
+    projectsToggle.addEventListener('click', (e)=>{
+      e.preventDefault();
+      showingProjects = !showingProjects;
+
+      if(showingProjects){
+        projectsView.style.display = 'block';
+        profileViews.style.display = 'none';
+        projectsToggle.textContent = 'Go Back';
+        bannerTitle.textContent = 'Projects';
+        if(!projectsLoaded){ renderProjects(); }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }else{
+        projectsView.style.display = 'none';
+        profileViews.style.display = 'block';
+        projectsToggle.textContent = 'Projects';
+        bannerTitle.textContent = 'Hoi';
+      }
+    });
+
+    // --- Boot ---
+    (async()=>{
+      await refreshMe();
+      await listComments(1);
+      await listMusic(1);
+      await refreshPlaylist();
+    })();
   </script>
 </body>
 </html>
